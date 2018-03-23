@@ -63,6 +63,46 @@ namespace LanDiscordBot.Scp
             Description = "";
         }
 
+        public String SetObjectClass(String objectClass)
+        {
+            String classChangeStatus;
+
+            if (objectClass.Equals("unknown", StringComparison.OrdinalIgnoreCase))
+            {
+                ObjectClass = ScpObjectClass.Unknown;
+
+                classChangeStatus = "Unknown";
+            }
+            else if (objectClass.Equals("safe", StringComparison.OrdinalIgnoreCase))
+            {
+                ObjectClass = ScpObjectClass.Safe;
+
+                classChangeStatus = "Safe";
+            }
+            else if (objectClass.Equals("euclid", StringComparison.OrdinalIgnoreCase))
+            {
+                ObjectClass = ScpObjectClass.Euclid;
+
+                classChangeStatus = "Euclid";
+            }
+            else if (objectClass.Equals("keter", StringComparison.OrdinalIgnoreCase))
+            {
+                ObjectClass = ScpObjectClass.Keter;
+
+                classChangeStatus = "Keter";
+            }
+            else
+            {
+                ObjectClass = ScpObjectClass.Custom;
+
+                ObjectClassCustom = objectClass;
+
+                classChangeStatus = objectClass;
+            }
+
+            return classChangeStatus;
+        }
+
         public static String GetViewId(int id)
         {
             String viewId = id.ToString();

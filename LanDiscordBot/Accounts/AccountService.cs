@@ -44,10 +44,11 @@ namespace LanDiscordBot.Accounts
             // Register Commands
             _bot.Chat.RegisterCommand("initreg", new InitRegCommand(_bot));
 
+            _bot.Chat.RegisterCommand("listroles", new ListRoleCommand(_bot));
             _bot.Chat.RegisterCommand("addflag", new AddFlagCommand(_bot));
             _bot.Chat.RegisterCommand("removeflag", new RemoveFlagCommand(_bot));
             _bot.Chat.RegisterCommand("addrole", new AddRoleCommand(_bot));
-            // remove role
+            _bot.Chat.RegisterCommand("removerole", new RemoveRoleCommand(_bot));
             _bot.Chat.RegisterCommand("giverole", new GiveRoleCommand(_bot));
             _bot.Chat.RegisterCommand("takerole", new TakeRoleCommand(_bot));
 

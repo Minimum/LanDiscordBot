@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Discord.Commands;
@@ -156,9 +157,11 @@ namespace LanDiscordBot.Scp
 
                 if (numFound)
                 {
+                    ScpObject scp = null;
+
                     if (Scps.ContainsKey(num))
                     {
-                        ScpObject scp = Scps[num];
+                        scp = Scps[num];
 
                         _bot.Chat.SendMessage(e.Channel,
                             "**Item #:** SCP-" + scp.ViewId + " - " + scp.Name + "\n\n"
@@ -168,15 +171,164 @@ namespace LanDiscordBot.Scp
                     }
                     else
                     {
-                        Random rand = new Random();
-                        String response = UnknownResponses[rand.Next(UnknownResponses.Count)].Replace("%s", ScpObject.GetViewId(num)).Replace("%u", e.User.Mention);
+                        try
+                        {
+                            scp = GrabOnlineVersion(num);
+                        }
+                        catch (Exception exception)
+                        {
+                            Console.WriteLine(exception);
+                        }
 
-                        _bot.Chat.SendMessage(e.Channel, response);
+                        if (scp != null)
+                        {
+                            Scps.Add(num, scp);
+
+                            SaveChanges();
+
+                            _bot.Chat.SendMessage(e.Channel,
+                                "**Item #:** SCP-" + scp.ViewId + " - " + scp.Name + "\n\n"
+                                + "**Object Class:** " + scp.ObjectClassName + "\n\n"
+                                + "**Briefing:**\n```" + scp.Description + "```\n"
+                                + "**Wiki Link:** http://www.scp-wiki.net/scp-" + scp.ViewId);
+                        }
+                        else
+                        {
+                            Random rand = new Random();
+                            String response = UnknownResponses[rand.Next(UnknownResponses.Count)].Replace("%s", ScpObject.GetViewId(num)).Replace("%u", e.User.Mention);
+
+                            _bot.Chat.SendMessage(e.Channel, response);
+                        }
                     }
                 }
             }
 
             return;
+        }
+
+        private ScpObject GrabOnlineVersion(int id)
+        {
+            ScpObject scp = null;
+            String page = "";
+
+            WebClient client = new WebClient();
+
+            page = client.DownloadString("http://www.scp-wiki.net/scp-" + ScpObject.GetViewId(id));
+
+            int classStart = page.IndexOf("<strong>Object Class:</strong>", StringComparison.OrdinalIgnoreCase);
+
+            if (classStart != -1)
+            {
+                scp = new ScpObject
+                {
+                    Id = id
+                };
+
+                classStart += 30;
+
+                int classEnd = page.IndexOf("</p>", classStart, StringComparison.OrdinalIgnoreCase);
+
+                if (classEnd != -1)
+                {
+                    String objectClass = page.Substring(classStart, classEnd - classStart).Trim();
+
+                    int anomaly = objectClass.LastIndexOf('<');
+
+                    if (anomaly != -1)
+                    {
+                        int anomalyStart = 0;
+
+                        for (int x = anomaly; x >= 0; x--)
+                        {
+                            if (objectClass[x] == '>')
+                            {
+                                anomalyStart = x;
+
+                                break;
+                            }
+                        }
+
+                        objectClass = objectClass.Substring(anomalyStart + 1, anomaly - anomalyStart - 1).Trim();
+                    }
+
+                    scp.SetObjectClass(objectClass);
+                }
+
+                int descStart = page.IndexOf("<strong>Description:</strong>", classEnd,
+                    StringComparison.OrdinalIgnoreCase);
+
+                if (descStart != -1)
+                {
+                    descStart += 29;
+
+                    int descEnd = page.IndexOf("</p>", descStart,
+                        StringComparison.OrdinalIgnoreCase);
+
+                    scp.Description = descEnd != 1 ? page.Substring(descStart, descEnd - descStart).Trim().Replace("&quot;", "\"").Replace("&#160;", " ") : "[REDACTED]";
+                }
+                else
+                {
+                    scp.Description = "[REDACTED]";
+                }
+
+                scp.Description += "\n\n**This info was automatically pulled from wiki via the bot.**";
+
+                String series = "";
+
+                if (id > 999)
+                {
+                    series = "-" + (id / 1000 + 1);
+                }
+
+                page = client.DownloadString("http://www.scp-wiki.net/scp-series" + series);
+
+                int nameStart = page.IndexOf("SCP-" + scp.ViewId + "</a> -", StringComparison.OrdinalIgnoreCase);
+
+                if (nameStart != -1)
+                {
+                    nameStart += 14;
+
+                    int nameEnd = page.IndexOf("</li>", nameStart, StringComparison.OrdinalIgnoreCase);
+
+                    if (nameEnd != -1)
+                    {
+                        String name = page.Substring(nameStart, nameEnd - nameStart).Trim();
+
+                        int anomaly = name.LastIndexOf('<');
+
+                        if (anomaly != -1)
+                        {
+                            int anomalyStart = 0;
+
+                            for (int x = anomaly; x >= 0; x--)
+                            {
+                                if (name[x] == '>')
+                                {
+                                    anomalyStart = x;
+
+                                    break;
+                                }
+                            }
+
+                            name = name.Substring(anomalyStart + 1, anomaly - anomalyStart - 1).Trim();
+                        }
+
+                        scp.Name = name;
+                    }
+                    else
+                    {
+                        scp.Name = "[REDACTED]";
+                    }
+                }
+                else
+                {
+                    scp.Name = "[REDACTED]";
+                }
+            }
+
+            client.Dispose();
+
+            return scp;
         }
 
         public void SaveChanges()

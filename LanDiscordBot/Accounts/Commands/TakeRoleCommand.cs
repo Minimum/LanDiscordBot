@@ -52,7 +52,7 @@ namespace LanDiscordBot.Accounts.Commands
             {
                 UserAccount account = Service.Accounts.CreateAccount(user.Id);
 
-                if (!account.CheckAccess("AccountsManageUserRole") && !account.Roles.Contains(role))
+                if (!account.Roles.Contains(role))
                 {
                     account.Roles.Remove(role);
 

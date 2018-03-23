@@ -148,6 +148,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\AccountService.cs" />
+    <Compile Include="Accounts\Commands\ListRoleCommand.cs" />
+    <Compile Include="Accounts\Commands\RemoveRoleCommand.cs" />
     <Compile Include="Accounts\UserAccount.cs" />
     <Compile Include="Accounts\UserRole.cs" />
     <Compile Include="Bot\BotService.cs" />

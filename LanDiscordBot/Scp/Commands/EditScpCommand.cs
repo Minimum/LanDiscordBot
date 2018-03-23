@@ -62,40 +62,7 @@ namespace LanDiscordBot.Scp.Commands
             }
             else if (args[1].Equals("class", StringComparison.OrdinalIgnoreCase))
             {
-                String classChangeStatus = "";
-
-                if (args[2].Equals("unknown", StringComparison.OrdinalIgnoreCase))
-                {
-                    scp.ObjectClass = ScpObjectClass.Unknown;
-
-                    classChangeStatus = "Unknown";
-                }
-                else if (args[2].Equals("safe", StringComparison.OrdinalIgnoreCase))
-                {
-                    scp.ObjectClass = ScpObjectClass.Safe;
-
-                    classChangeStatus = "Safe";
-                }
-                else if (args[2].Equals("euclid", StringComparison.OrdinalIgnoreCase))
-                {
-                    scp.ObjectClass = ScpObjectClass.Euclid;
-
-                    classChangeStatus = "Euclid";
-                }
-                else if (args[2].Equals("keter", StringComparison.OrdinalIgnoreCase))
-                {
-                    scp.ObjectClass = ScpObjectClass.Keter;
-
-                    classChangeStatus = "Keter";
-                }
-                else
-                {
-                    scp.ObjectClass = ScpObjectClass.Custom;
-
-                    scp.ObjectClassCustom = args[2];
-
-                    classChangeStatus = args[2];
-                }
+                String classChangeStatus = scp.SetObjectClass(args[2]);
 
                 Service.Chat.SendMessage(message.Channel, "Successfully changed SCP-" + ScpObject.GetViewId(id) + "'s class to \"" + classChangeStatus + "\"!");
             }
