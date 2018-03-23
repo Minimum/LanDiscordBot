@@ -154,18 +154,18 @@
     <Compile Include="Bot\BotSettings.cs" />
     <Compile Include="Chat\ChatCommand.cs" />
     <Compile Include="Chat\ChatService.cs" />
-    <Compile Include="Chat\Commands\AddFlagCommand.cs" />
-    <Compile Include="Chat\Commands\AddRoleCommand.cs" />
-    <Compile Include="Chat\Commands\AddScpCommand.cs" />
+    <Compile Include="Accounts\Commands\AddFlagCommand.cs" />
+    <Compile Include="Accounts\Commands\AddRoleCommand.cs" />
+    <Compile Include="Scp\Commands\AddScpCommand.cs" />
     <Compile Include="Chat\Commands\SayCommand.cs" />
     <Compile Include="Chat\Commands\VersionCommand.cs" />
-    <Compile Include="Chat\Commands\GiveRoleCommand.cs" />
-    <Compile Include="Chat\Commands\EditScpCommand.cs" />
+    <Compile Include="Accounts\Commands\GiveRoleCommand.cs" />
+    <Compile Include="Scp\Commands\EditScpCommand.cs" />
     <Compile Include="Chat\Commands\HelpCommand.cs" />
-    <Compile Include="Chat\Commands\InitRegCommand.cs" />
-    <Compile Include="Chat\Commands\RemoveFlagCommand.cs" />
+    <Compile Include="Accounts\Commands\InitRegCommand.cs" />
+    <Compile Include="Accounts\Commands\RemoveFlagCommand.cs" />
     <Compile Include="Chat\Commands\SetNickCommand.cs" />
-    <Compile Include="Chat\Commands\TakeRoleCommand.cs" />
+    <Compile Include="Accounts\Commands\TakeRoleCommand.cs" />
     <Compile Include="Chat\Commands\UptimeCommand.cs" />
     <Compile Include="Dao\AccountDao.cs" />
     <Compile Include="Dao\BotDao.cs" />
@@ -192,5 +192,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

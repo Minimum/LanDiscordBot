@@ -1,28 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Discord.WebSocket;
 using LanDiscordBot.Accounts;
 using LanDiscordBot.Bot;
+using LanDiscordBot.Chat;
 
-namespace LanDiscordBot.Chat.Commands
+namespace LanDiscordBot.Accounts.Commands
 {
-    public class TakeRoleCommand : ChatCommand
+    public class GiveRoleCommand : ChatCommand
     {
-        public TakeRoleCommand(BotService service) 
+        public GiveRoleCommand(BotService service) 
             : base(service)
         {
             AccessFlag = "AccountsManageRole";
-            Description = "Removes a role from specified users.";
+            Description = "Adds a role to specified user accounts.";
         }
 
         public override void Execute(ChatMessageArgs message, string arguments)
         {
             if (!Service.Accounts.CheckAccess(message.User.Id, "AccountsManageRole"))
             {
-                Service.Chat.SendDirectMessage(message.User, "You do not have permission to remove roles from user accounts.");
+                Service.Chat.SendDirectMessage(message.User, "You do not have permission to add roles to user accounts.");
 
                 return;
             }
@@ -31,7 +34,7 @@ namespace LanDiscordBot.Chat.Commands
 
             if (args.Count < 2 || message.Data.MentionedUsers.Count < 1)
             {
-                Service.Chat.SendMessage(message.Channel, message.User.Mention + " Usage: " + Service.Settings.ChatCommandPrefix + "takerole <ROLE> [MENTIONED USERS]");
+                Service.Chat.SendMessage(message.Channel, message.User.Mention + " Usage: " + Service.Settings.ChatCommandPrefix + "giverole <ROLE> [MENTIONED USERS]");
 
                 return;
             }
@@ -45,15 +48,15 @@ namespace LanDiscordBot.Chat.Commands
                 return;
             }
 
-            String resultMessage = message.User.Mention + " You have successfully taken the role \"" + args[0] + "\" from";
+            String resultMessage = message.User.Mention + " You have successfully assigned the role \"" + args[0] + "\" to";
 
             foreach (SocketUser user in message.Data.MentionedUsers)
             {
                 UserAccount account = Service.Accounts.CreateAccount(user.Id);
 
-                if (!account.CheckAccess("AccountsManageUserRole") && !account.Roles.Contains(role))
+                if (!account.Roles.Contains(role))
                 {
-                    account.Roles.Remove(role);
+                    account.Roles.Add(role);
 
                     resultMessage += " " + user.Mention;
                 }

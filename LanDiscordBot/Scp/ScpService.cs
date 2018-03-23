@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Discord.Commands;
 using LanDiscordBot.Bot;
 using LanDiscordBot.Chat;
-using LanDiscordBot.Chat.Commands;
 using LanDiscordBot.Dao;
+using LanDiscordBot.Scp.Commands;
 
 namespace LanDiscordBot.Scp
 {

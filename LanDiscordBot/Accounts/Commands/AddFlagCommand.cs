@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using LanDiscordBot.Accounts;
 using LanDiscordBot.Bot;
+using LanDiscordBot.Chat;
 
-namespace LanDiscordBot.Chat.Commands
+namespace LanDiscordBot.Accounts.Commands
 {
     public class AddFlagCommand : ChatCommand
     {

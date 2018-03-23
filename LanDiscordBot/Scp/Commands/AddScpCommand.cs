@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LanDiscordBot.Bot;
-using LanDiscordBot.Scp;
+using LanDiscordBot.Chat;
 
-namespace LanDiscordBot.Chat.Commands
+namespace LanDiscordBot.Scp.Commands
 {
     public class AddScpCommand : ChatCommand
     {

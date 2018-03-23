@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using LanDiscordBot.Accounts.Commands;
 using LanDiscordBot.Bot;
-using LanDiscordBot.Chat.Commands;
 using LanDiscordBot.Dao;
 using Newtonsoft.Json;
 
