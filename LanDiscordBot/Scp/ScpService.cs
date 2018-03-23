@@ -18,7 +18,6 @@ namespace LanDiscordBot.Scp
 
         public Dictionary<int, ScpObject> Scps { get; private set; }
 
-        public List<String> InvalidResponses { get; set; }
         public List<String> UnknownResponses { get; set; }
 
         public ScpService(BotService bot)
@@ -26,7 +25,6 @@ namespace LanDiscordBot.Scp
             _bot = bot;
 
             Scps = null;
-            InvalidResponses = null;
             UnknownResponses = null;
         }
 
@@ -57,25 +55,6 @@ namespace LanDiscordBot.Scp
                 });
 
                 ScpDao.SaveScps(Scps);
-            }
-
-            // Load Invalid Responses
-            try
-            {
-                InvalidResponses = ScpDao.LoadInvalidResponses();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            if (InvalidResponses == null)
-            {
-                InvalidResponses = new List<String>();
-
-                InvalidResponses.Add("Invalid SCP, %u, please try again.");
-
-                ScpDao.SaveInvalidResponses(InvalidResponses);
             }
 
             // Load Unknown Responses
@@ -194,13 +173,6 @@ namespace LanDiscordBot.Scp
 
                         _bot.Chat.SendMessage(e.Channel, response);
                     }
-                }
-                else
-                {
-                    Random rand = new Random();
-                    String response = InvalidResponses[rand.Next(UnknownResponses.Count)].Replace("%u", e.User.Mention);
-
-                    _bot.Chat.SendMessage(e.Channel, response);
                 }
             }
 

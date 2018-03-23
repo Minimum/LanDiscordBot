@@ -39,34 +39,6 @@ namespace LanDiscordBot.Dao
             return;
         }
 
-        public static List<String> LoadInvalidResponses()
-        {
-            String data = "";
-
-            using (var file = new FileStream(GlobalDao.DataPath + "scp/invalidResponses.json", FileMode.Open))
-            using (StreamReader reader = new StreamReader(file))
-            {
-                data = reader.ReadToEnd();
-            }
-
-            return JsonConvert.DeserializeObject<List<String>>(data, GetJsonSettings());
-        }
-
-        public static void SaveInvalidResponses(List<String> responses)
-        {
-            String data = JsonConvert.SerializeObject(responses, GetJsonSettings());
-
-            Directory.CreateDirectory(GlobalDao.DataPath + "scp/");
-
-            using (FileStream stream = new FileStream(GlobalDao.DataPath + "scp/invalidResponses.json", FileMode.Create, FileAccess.Write))
-            using (StreamWriter writer = new StreamWriter(stream))
-            {
-                writer.Write(data);
-            }
-
-            return;
-        }
-
         public static List<String> LoadUnknownResponses()
         {
             String data = "";
