@@ -30,6 +30,8 @@ namespace LanDiscordBot.Chat
             RegisterCommand("uptime", new UptimeCommand(_bot));
             RegisterCommand("setnick", new SetNickCommand(_bot));
             RegisterCommand("help", new HelpCommand(_bot));
+            RegisterCommand("version", new VersionCommand(_bot));
+            RegisterCommand("say", new SayCommand(_bot));
 
             _bot.Client.MessageReceived += ParseMessage;
 

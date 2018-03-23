@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using LanDiscordBot.Accounts;
@@ -10,6 +11,8 @@ namespace LanDiscordBot.Bot
 {
     public class BotService
     {
+        public const String Version = "1.0 (Build: 3-22-18)";
+
         public DiscordSocketClient Client { get; }
 
         public BotSettings Settings { get; private set; }
@@ -36,7 +39,7 @@ namespace LanDiscordBot.Bot
             Scp = new ScpService(this);
         }
 
-        public async void Initialize()
+        public async Task<bool> Initialize()
         {
             Console.WriteLine("Welcome to LanDiscordBot!\nBeginning initialization process...");
 
@@ -65,23 +68,30 @@ namespace LanDiscordBot.Bot
             {
                 Console.WriteLine("Invalid auth token!  Please set your bot's auth token in config/bot.json.");
 
-                return;
+                return false;
             }
 
             Console.WriteLine("Bot settings loaded.");
 
             // Login to Discord
             Console.WriteLine("Logging into Discord...");
-            await Client.LoginAsync(TokenType.Bot, Settings.AuthToken);
-
-            if (Client.LoginState == LoginState.LoggedIn)
+            try
             {
-                Console.WriteLine("Login successful!");
+                await Client.LoginAsync(TokenType.Bot, Settings.AuthToken);
             }
-            else
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            if (Client.LoginState != LoginState.LoggedIn)
             {
                 Console.WriteLine("Login failure!  Please verify your auth token in config/bot.json.");
+
+                return false;
             }
+
+            Console.WriteLine("Login successful!");
 
             // Accounts init
             Console.WriteLine("Loading accounting...");
@@ -122,7 +132,7 @@ namespace LanDiscordBot.Bot
 
             Console.WriteLine("Initialization complete!");
 
-            return;
+            return true;
         }
     }
 }

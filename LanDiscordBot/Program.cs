@@ -17,9 +17,10 @@ namespace LanDiscordBot
         {
             BotService service = new BotService();
 
-            service.Initialize();
+            bool success = await service.Initialize();
 
-            await Task.Delay(-1);
+            if(success)
+                await Task.Delay(-1);
         }
     }
 }
