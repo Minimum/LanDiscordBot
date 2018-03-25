@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
@@ -11,7 +12,7 @@ namespace LanDiscordBot.Bot
 {
     public class BotService
     {
-        public const String Version = "1.0 (Build: 3-23-18)";
+        public const String Version = "1.0 (Build: 3-24-18)";
 
         public DiscordSocketClient Client { get; }
 
@@ -133,6 +134,16 @@ namespace LanDiscordBot.Bot
             Console.WriteLine("Initialization complete!");
 
             return true;
+        }
+
+        public void SaveChanges()
+        {
+            lock (Settings)
+            {
+                BotDao.SaveSettings(Settings);
+            }
+
+            return;
         }
     }
 }
