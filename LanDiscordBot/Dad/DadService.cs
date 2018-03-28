@@ -78,7 +78,8 @@ namespace LanDiscordBot.Dad
             {
                 int messageStart = 0;
 
-                if (e.Message.IndexOf("i'm ", StringComparison.OrdinalIgnoreCase) == 0)
+                if (e.Message.IndexOf("i'm ", StringComparison.OrdinalIgnoreCase) == 0
+                    || e.Message.IndexOf("i’m ", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     messageStart = 4;
                 }

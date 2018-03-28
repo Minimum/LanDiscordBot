@@ -47,7 +47,7 @@ namespace LanDiscordBot.Chat
 
                     escape = false;
                 }
-                else if (symbol == '\"')
+                else if (symbol == '\"' || symbol == '“' || symbol == '”')
                 {
                     if (arg.Length > 0)
                     {
