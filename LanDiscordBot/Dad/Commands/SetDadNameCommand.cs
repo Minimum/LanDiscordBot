@@ -26,7 +26,7 @@ namespace LanDiscordBot.Dad.Commands
                 return;
             }
 
-            if (args.Length > 0)
+            if (args.Length < 1)
             {
                 Service.Chat.SendMessage(message.Channel, message.User.Mention + " Usage: " + Service.Settings.ChatCommandPrefix + "setdadname <NAME>");
             }
