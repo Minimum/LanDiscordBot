@@ -11,10 +11,16 @@ namespace LanDiscordBot.Bot
         // Bot auth
         public String AuthToken { get; set; }
 
+        // Bot settings
         public String PlayStatus { get; set; }
 
         // Chat settings
         public String ChatCommandPrefix { get; set; }
+
+        // Dad settings
+        public bool DadTalkEnabled { get; set; }
+        public String DadTalkName { get; set; }
+        public HashSet<UInt64> DadTalkServers { get; set; }
 
         public BotSettings()
         {
@@ -23,6 +29,10 @@ namespace LanDiscordBot.Bot
             PlayStatus = "";
 
             ChatCommandPrefix = ".";
+
+            DadTalkEnabled = false;
+            DadTalkName = "Dad";
+            DadTalkServers = new HashSet<UInt64>();
         }
     }
 }

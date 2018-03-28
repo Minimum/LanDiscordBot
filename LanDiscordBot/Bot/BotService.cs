@@ -5,6 +5,7 @@ using Discord;
 using Discord.WebSocket;
 using LanDiscordBot.Accounts;
 using LanDiscordBot.Chat;
+using LanDiscordBot.Dad;
 using LanDiscordBot.Dao;
 using LanDiscordBot.Scp;
 
@@ -23,6 +24,7 @@ namespace LanDiscordBot.Bot
         public AccountService Accounts { get; private set; }
         public ChatService Chat { get; }
         public ScpService Scp { get; }
+        public DadService Dad { get; }
 
         public long Uptime => (long) DateTime.UtcNow.Subtract(StartTime).TotalSeconds;
 
@@ -38,6 +40,7 @@ namespace LanDiscordBot.Bot
             Accounts = null;
             Chat = new ChatService(this);
             Scp = new ScpService(this);
+            Dad = new DadService(this);
         }
 
         public async Task<bool> Initialize()
@@ -123,6 +126,7 @@ namespace LanDiscordBot.Bot
             Console.WriteLine("Accounting loaded.");
 
             Scp.Initialize();
+            Dad.Initialize();
             Chat.Initialize();
 
             Console.WriteLine("Starting Discord client...");

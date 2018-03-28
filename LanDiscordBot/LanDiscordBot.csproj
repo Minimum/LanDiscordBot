@@ -159,6 +159,12 @@
     <Compile Include="Accounts\Commands\AddFlagCommand.cs" />
     <Compile Include="Accounts\Commands\AddRoleCommand.cs" />
     <Compile Include="Chat\Commands\SetStatusCommand.cs" />
+    <Compile Include="Dad\Commands\AddDadServerCommand.cs" />
+    <Compile Include="Dad\Commands\DisableDadCommand.cs" />
+    <Compile Include="Dad\Commands\EnableDadCommand.cs" />
+    <Compile Include="Dad\Commands\RemoveDadServerCommand.cs" />
+    <Compile Include="Dad\Commands\SetDadNameCommand.cs" />
+    <Compile Include="Dad\DadService.cs" />
     <Compile Include="Scp\Commands\AddScpCommand.cs" />
     <Compile Include="Chat\Commands\SayCommand.cs" />
     <Compile Include="Chat\Commands\VersionCommand.cs" />

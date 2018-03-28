@@ -143,6 +143,21 @@ namespace LanDiscordBot.Chat
         public ISocketMessageChannel Channel => Data.Channel;
         public String Message => Data.Content;
 
+        public SocketGuild Server
+        {
+            get
+            {
+                SocketGuild server = null;
+
+                if (Data.Channel is SocketGuildChannel channel)
+                {
+                    server = channel.Guild;
+                }
+
+                return server;
+            }
+        }
+
         public ChatMessageArgs(SocketUserMessage message)
         {
             Data = message;
