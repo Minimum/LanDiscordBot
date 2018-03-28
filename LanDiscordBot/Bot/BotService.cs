@@ -13,7 +13,7 @@ namespace LanDiscordBot.Bot
 {
     public class BotService
     {
-        public const String Version = "1.0 (Build: 3-24-18)";
+        public const String Version = "1.0 (Build: 3-27-18)";
 
         public DiscordSocketClient Client { get; }
 

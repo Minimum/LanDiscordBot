@@ -44,6 +44,7 @@ namespace LanDiscordBot.Dad
         {
             if (!_enabled)
             {
+                _bot.Settings.DadTalkEnabled = true;
                 _enabled = true;
 
                 _bot.Chat.OnRegularChatMessage += ChatMessageHook;
@@ -58,6 +59,7 @@ namespace LanDiscordBot.Dad
         {
             if (_enabled)
             {
+                _bot.Settings.DadTalkEnabled = false;
                 _enabled = false;
 
                 _bot.Chat.OnRegularChatMessage -= ChatMessageHook;
