@@ -7,13 +7,14 @@ using LanDiscordBot.Accounts;
 using LanDiscordBot.Chat;
 using LanDiscordBot.Dad;
 using LanDiscordBot.Dao;
+using LanDiscordBot.Highlights;
 using LanDiscordBot.Scp;
 
 namespace LanDiscordBot.Bot
 {
     public class BotService
     {
-        public const String Version = "1.0 (Build: 3-27-18)";
+        public const String Version = "1.1 (Build: 6-26-18)";
 
         public DiscordSocketClient Client { get; }
 
@@ -25,12 +26,18 @@ namespace LanDiscordBot.Bot
         public ChatService Chat { get; }
         public ScpService Scp { get; }
         public DadService Dad { get; }
+        public HighlightService Highlights { get; }
 
         public long Uptime => (long) DateTime.UtcNow.Subtract(StartTime).TotalSeconds;
 
         public BotService()
         {
-            Client = new DiscordSocketClient();
+            DiscordSocketConfig config = new DiscordSocketConfig
+            {
+                MessageCacheSize = 512
+            };
+
+            Client = new DiscordSocketClient(config);
 
             StartTime = DateTime.UtcNow;
 
@@ -41,6 +48,7 @@ namespace LanDiscordBot.Bot
             Chat = new ChatService(this);
             Scp = new ScpService(this);
             Dad = new DadService(this);
+            Highlights = new HighlightService(this);
         }
 
         public async Task<bool> Initialize()
@@ -128,6 +136,7 @@ namespace LanDiscordBot.Bot
             Scp.Initialize();
             Dad.Initialize();
             Chat.Initialize();
+            Highlights.Initialize();
 
             Console.WriteLine("Starting Discord client...");
             await Client.StartAsync();

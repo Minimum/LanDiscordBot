@@ -92,6 +92,9 @@ namespace LanDiscordBot.Chat
 
         public async void SendDirectMessage(SocketUser user, String message)
         {
+            if (user == null)
+                return;
+
             var channel = await user.GetOrCreateDMChannelAsync();
 
             await channel.SendMessageAsync(message);
@@ -120,7 +123,7 @@ namespace LanDiscordBot.Chat
                         _commands[cmdName].Execute(new ChatMessageArgs(message), args);
 
                     }
-                    else
+                    else if(cmdName.Length > 2)
                     {
                         SendMessage(arg.Channel, "I do not recognize that command " + arg.Author.Mention + ".");
                     }

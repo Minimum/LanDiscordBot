@@ -165,6 +165,14 @@
     <Compile Include="Dad\Commands\RemoveDadServerCommand.cs" />
     <Compile Include="Dad\Commands\SetDadNameCommand.cs" />
     <Compile Include="Dad\DadService.cs" />
+    <Compile Include="Dao\HighlightDao.cs" />
+    <Compile Include="Highlights\Commands\AddHighlightServerCommand.cs" />
+    <Compile Include="Highlights\Commands\AddReactCommand.cs" />
+    <Compile Include="Highlights\Commands\RemoveReactCommand.cs" />
+    <Compile Include="Highlights\Commands\SetHighlightChannelCommand.cs" />
+    <Compile Include="Highlights\Commands\SetReactAmountCommand.cs" />
+    <Compile Include="Highlights\HighlightServer.cs" />
+    <Compile Include="Highlights\HighlightService.cs" />
     <Compile Include="Scp\Commands\AddScpCommand.cs" />
     <Compile Include="Chat\Commands\SayCommand.cs" />
     <Compile Include="Chat\Commands\VersionCommand.cs" />
