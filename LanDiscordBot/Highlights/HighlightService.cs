@@ -191,7 +191,10 @@ namespace LanDiscordBot.Highlights
                 {
                     var delet = new List<IMessage> { oldMessage };
 
-                    await highlightChannel.DeleteMessagesAsync(delet);
+                    foreach (IMessage deleteMessage in delet)
+                    {
+                        await highlightChannel.DeleteMessageAsync(deleteMessage);
+                    }
 
                     server.Highlights.Remove(message.Id);
                 }
@@ -200,7 +203,7 @@ namespace LanDiscordBot.Highlights
             if (!modified)
             {
                 // Create new message
-                var highlightMessage = await highlightChannel.SendMessageAsync(content, false, embed);
+                var highlightMessage = await highlightChannel.SendMessageAsync(content, false, embed.Build());
 
                 server.Highlights.Add(message.Id, highlightMessage.Id);
 

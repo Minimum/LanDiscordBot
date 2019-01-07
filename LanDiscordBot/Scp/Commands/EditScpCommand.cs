@@ -72,6 +72,10 @@ namespace LanDiscordBot.Scp.Commands
 
                 Service.Chat.SendMessage(message.Channel, "Successfully changed SCP-" + ScpObject.GetViewId(id) + "'s description to \n```" + args[2] + "```");
             }
+            else if (args[1].Equals("image", StringComparison.OrdinalIgnoreCase))
+            {
+
+            }
             else
             {
                 Service.Chat.SendMessage(message.Channel, "Valid field types: \"Name\", \"Class\", or \"Description\".");
