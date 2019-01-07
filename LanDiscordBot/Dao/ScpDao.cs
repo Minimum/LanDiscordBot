@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using LanDiscordBot.Scp;
@@ -66,6 +67,10 @@ namespace LanDiscordBot.Dao
 
             return;
         }
+
+        public static bool ImageExists(int scp) => File.Exists(GetImagePath(scp));
+
+        public static String GetImagePath(int scp) => GlobalDao.DataPath + "scp/images/" + scp + ".thumb";
 
         private static JsonSerializerSettings GetJsonSettings()
         {

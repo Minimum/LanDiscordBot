@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Discord;
 using Discord.Commands;
+using Discord.Rest;
 using LanDiscordBot.Bot;
 using LanDiscordBot.Chat;
 using LanDiscordBot.Dao;
@@ -163,11 +166,7 @@ namespace LanDiscordBot.Scp
                     {
                         scp = Scps[num];
 
-                        _bot.Chat.SendMessage(e.Channel,
-                            "**Item #:** SCP-" + scp.ViewId + " - " + scp.Name + "\n\n"
-                            + "**Object Class:** " + scp.ObjectClassName + "\n\n"
-                            + "**Briefing:**\n```" + scp.Description + "```\n"
-                            + "**Wiki Link:** http://www.scp-wiki.net/scp-" + scp.ViewId);
+                        SendMessage(e, scp);
                     }
                     else
                     {
@@ -186,11 +185,7 @@ namespace LanDiscordBot.Scp
 
                             SaveChanges();
 
-                            _bot.Chat.SendMessage(e.Channel,
-                                "**Item #:** SCP-" + scp.ViewId + " - " + scp.Name + "\n\n"
-                                + "**Object Class:** " + scp.ObjectClassName + "\n\n"
-                                + "**Briefing:**\n```" + scp.Description + "```\n"
-                                + "**Wiki Link:** http://www.scp-wiki.net/scp-" + scp.ViewId);
+                            SendMessage(e, scp);
                         }
                         else
                         {
@@ -202,6 +197,80 @@ namespace LanDiscordBot.Scp
                     }
                 }
             }
+
+            return;
+        }
+
+        private async void SendMessage(ChatMessageArgs e, ScpObject scp)
+        {
+            Color scpColor;
+
+            switch (scp.ObjectClass)
+            {
+                case ScpObjectClass.Safe:
+                    {
+                        scpColor = new Color(0, 255, 0);
+
+                        break;
+                    }
+
+                case ScpObjectClass.Euclid:
+                    {
+                        scpColor = new Color(255, 255, 0);
+
+                        break;
+                    }
+
+                case ScpObjectClass.Keter:
+                    {
+                        scpColor = new Color(255, 0, 0);
+
+                        break;
+                    }
+
+                default:
+                    {
+                        scpColor = new Color(255, 255, 255);
+
+                        break;
+                    }
+            }
+
+            EmbedBuilder embed = new EmbedBuilder
+            {
+                Title = "SCP-" + scp.ViewId + " - " + scp.Name,
+                Color = scpColor,
+                Description = scp.Description,
+                Url = "http://www.scp-wiki.net/scp-" + scp.ViewId,
+                Timestamp = scp.EditTime
+            };
+
+            // Object Class
+            EmbedFieldBuilder classField = new EmbedFieldBuilder();
+            classField.Name = "Object Class";
+            classField.Value = scp.ObjectClassName;
+            embed.Fields.Add(classField);
+
+            // Footer
+            EmbedFooterBuilder embedFooter = new EmbedFooterBuilder();
+            if (scp.Generated && !scp.Curated)
+            {
+                embedFooter.Text = "This info was automatically pulled from wiki via the bot.";
+            }
+            else
+            {
+                embedFooter.Text = "This info was altered by " + scp.EditorName + ".";
+            }
+            embed.Footer = embedFooter;
+
+            if (!String.IsNullOrWhiteSpace(scp.Image))
+            {
+                embed.ImageUrl = scp.Image;
+            }
+
+            await e.Channel.SendMessageAsync("",
+                                             false,
+                                             embed.Build());
 
             return;
         }
@@ -271,7 +340,7 @@ namespace LanDiscordBot.Scp
                     scp.Description = "[REDACTED]";
                 }
 
-                scp.Description += "\n\n**This info was automatically pulled from wiki via the bot.**";
+                scp.Generated = true;
 
                 String series = "";
 

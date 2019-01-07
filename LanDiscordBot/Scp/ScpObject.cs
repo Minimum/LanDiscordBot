@@ -13,8 +13,15 @@ namespace LanDiscordBot.Scp
         public String Name { get; set; }
         public ScpObjectClass ObjectClass { get; set; }
         public String ObjectClassCustom { get; set; }
+        public String Image { get; set; }
 
         public String Description { get; set; }
+
+        public bool Generated { get; set; }
+        public bool Curated { get; set; }
+
+        public DateTime EditTime { get; set; }
+        public String EditorName { get; set; }
 
         [JsonIgnore] public String ViewId => GetViewId(Id);
 
@@ -59,8 +66,15 @@ namespace LanDiscordBot.Scp
             Name = "";
             ObjectClass = ScpObjectClass.Unknown;
             ObjectClassCustom = "";
+            Image = "";
 
             Description = "";
+
+            Generated = false;
+            Curated = false;
+
+            EditTime = DateTime.Now;
+            EditorName = "";
         }
 
         public String SetObjectClass(String objectClass)

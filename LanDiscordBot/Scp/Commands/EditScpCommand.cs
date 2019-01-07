@@ -74,7 +74,9 @@ namespace LanDiscordBot.Scp.Commands
             }
             else if (args[1].Equals("image", StringComparison.OrdinalIgnoreCase))
             {
+                scp.Image = args[2];
 
+                Service.Chat.SendMessage(message.Channel, "Successfully changed SCP-" + ScpObject.GetViewId(id) + "'s image URL to \n```" + args[2] + "```");
             }
             else
             {
@@ -82,6 +84,10 @@ namespace LanDiscordBot.Scp.Commands
 
                 return;
             }
+
+            scp.EditTime = DateTime.Now;
+            scp.Curated = true;
+            scp.EditorName = message.User.Username + "#" + message.User.Discriminator;
 
             Service.Scp.SaveChanges();
 
