@@ -14,6 +14,7 @@ namespace LanDiscordBot.Scp
         public ScpObjectClass ObjectClass { get; set; }
         public String ObjectClassCustom { get; set; }
         public String Image { get; set; }
+        public String Video { get; set; }
 
         public String Description { get; set; }
 
@@ -67,6 +68,7 @@ namespace LanDiscordBot.Scp
             ObjectClass = ScpObjectClass.Unknown;
             ObjectClassCustom = "";
             Image = "";
+            Video = "";
 
             Description = "";
 

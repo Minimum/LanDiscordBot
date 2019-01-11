@@ -246,10 +246,22 @@ namespace LanDiscordBot.Scp
             };
 
             // Object Class
-            EmbedFieldBuilder classField = new EmbedFieldBuilder();
-            classField.Name = "Object Class";
-            classField.Value = scp.ObjectClassName;
+            EmbedFieldBuilder classField = new EmbedFieldBuilder
+            {
+                Name = "Object Class",
+                Value = scp.ObjectClassName
+            };
             embed.Fields.Add(classField);
+
+            if (!String.IsNullOrWhiteSpace(scp.Video))
+            {
+                EmbedFieldBuilder videoField = new EmbedFieldBuilder
+                {
+                    Name = "Video (O5 ACCESS REQUIRED)",
+                    Value = scp.Video
+                };
+                embed.Fields.Add(videoField);
+            }
 
             // Footer
             EmbedFooterBuilder embedFooter = new EmbedFooterBuilder();
