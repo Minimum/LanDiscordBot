@@ -149,6 +149,8 @@ namespace LanDiscordBot.Bot
             return true;
         }
 
+        public void WriteConsole(String message) => Console.WriteLine(message);
+
         public void SaveChanges()
         {
             lock (Settings)

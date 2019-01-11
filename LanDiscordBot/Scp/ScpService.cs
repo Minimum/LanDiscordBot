@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -176,7 +177,7 @@ namespace LanDiscordBot.Scp
                         }
                         catch (Exception exception)
                         {
-                            Console.WriteLine(exception);
+                            _bot.WriteConsole("[SCP] Attempt to pull SCP-" + num + " from website has failed!\nDisplaying error info:\n" + exception);
                         }
 
                         if (scp != null)
@@ -294,9 +295,12 @@ namespace LanDiscordBot.Scp
 
             WebClient client = new WebClient();
 
+            _bot.WriteConsole("[SCP] Attempting to pull SCP-" + id + " from website.");
+
             page = client.DownloadString("http://www.scp-wiki.net/scp-" + ScpObject.GetViewId(id));
 
-            int classStart = page.IndexOf("<strong>Object Class:</strong>", StringComparison.OrdinalIgnoreCase);
+            var match = Regex.Match(page, "<strong>Object Class:*</strong>");
+            int classStart = match.Index;
 
             if (classStart != -1)
             {
@@ -335,8 +339,8 @@ namespace LanDiscordBot.Scp
                     scp.SetObjectClass(objectClass);
                 }
 
-                int descStart = page.IndexOf("<strong>Description:</strong>", classEnd,
-                    StringComparison.OrdinalIgnoreCase);
+                match = Regex.Match(page, "<strong>Description:*</strong>");
+                int descStart = match.Index;
 
                 if (descStart != -1)
                 {
@@ -345,7 +349,12 @@ namespace LanDiscordBot.Scp
                     int descEnd = page.IndexOf("</p>", descStart,
                         StringComparison.OrdinalIgnoreCase);
 
-                    scp.Description = descEnd != 1 ? page.Substring(descStart, descEnd - descStart).Trim().Replace("&quot;", "\"").Replace("&#160;", " ") : "[REDACTED]";
+                    var desc = descEnd != 1
+                        ? page.Substring(descStart, descEnd - descStart).Trim().Replace("&quot;", "\"")
+                            .Replace("&#160;", " ")
+                        : "[REDACTED]";
+
+                    scp.Description = Regex.Replace(desc, "<[^>]*>", "");
                 }
                 else
                 {
@@ -405,6 +414,10 @@ namespace LanDiscordBot.Scp
                 {
                     scp.Name = "[REDACTED]";
                 }
+            }
+            else
+            {
+                _bot.WriteConsole("[SCP] Couldn't detect object class for SCP-" + id + "!");
             }
 
             client.Dispose();
